@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="main-content">
+  <div class="container">
+    <h1>Správa uživatelů</h1>
+
+    <!-- Tlačítko pro přidání nového uživatele -->
+    <a href="{{ url_for('create_user') }}" class="login-button">➕ Nový uživatel</a>
+
+    <!-- Seznam uživatelů -->
+    <div class="user-grid">
+      {% for user in users %}
+        <div class="user-card">
+          <h3>{{ user.username }}</h3>
+          <p>Email: {{ user.email }}</p>
+          <p>Role: {{ user.role }}</p>
+          <a href="{{ url_for('edit_user', user_id=user.id) }}" class="read-more">Upravit</a> |
+          <a href="{{ url_for('delete_user', user_id=user.id) }}" class="read-more">Smazat</a>
+        </div>
+      {% else %}
+        <p>Žádní uživatelé zatím nejsou registrováni.</p>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}

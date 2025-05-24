@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Pastelový Blog</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <header class="site-header">
+      <div class="container">
+        <h1 class="site-title"><a href="{{ url_for('home') }}">Pastelový Blog</a></h1>
+
+        <div class="header-buttons">
+          {% if current_user.is_authenticated %}
+            <a href="{{ url_for('dashboard') }}" class="login-button">Administrace</a>
+          {% endif %}
+          <a href="{{ url_for('logout') if current_user.is_authenticated else url_for('login') }}" class="login-button">
+            {{ 'Odhlásit se' if current_user.is_authenticated else 'Přihlásit se' }}
+          </a>
+        </div>
+      </div>
+    </header>
+
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+:root {
+  --background-color: #fff8f2;      /* Jemný pastelový odstín pro pozadí obsahu i hlavičky */
+  --primary-color: #ffd6e8;         /* (už nevyužitá) pastelově růžová */
+  --accent-color: #b5ead7;          /* Pastelově zelená pro tlačítka */
+  --text-color: #2e2e2e;            /* Tmavší uhlová pro lepší kontrast */
+  --card-radius: 1.25rem;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #ffffff; /* bílé pozadí po stranách */
+  color: var(--text-color);
+}
+
+.site-header {
+  background-color: var(--background-color);
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.site-title a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.login-button {
+  text-decoration: none;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+}
+
+.main-content {
+  background-color: var(--background-color);
+  padding: 2rem 0;
+}
+
+.container {
+  max-width: 780px;  /* zúžená stránka pro decentní bílé okraje */
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.post-card {
+  background-color: #fff;
+  border-radius: var(--card-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.post-card img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--card-radius);
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 0.5rem;
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.post-detail img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--card-radius);
+  margin-bottom: 1rem;
+}
+
+.post-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin: 1rem 0;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.back-link.bottom {
+  margin-top: 2rem;
+  display: block;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  background-color: var(--background-color);
+}
+
+.login-form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: var(--card-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.login-form button {
+  background-color: var(--accent-color);
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}

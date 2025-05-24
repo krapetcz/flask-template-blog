@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="login-wrapper">
+  <form class="login-form" method="POST" enctype="multipart/form-data">
+    <h2>{% if article %}Upravit{% else %}Nový{% endif %} článek</h2>
+
+    <label for="title">Název</label>
+    <input type="text" id="title" name="title" value="{{ article.title if article else '' }}" required>
+
+    <label for="content">Obsah</label>
+    <textarea id="content" name="content" rows="6" required>{{ article.content if article else '' }}</textarea>
+
+    <label for="image">Obrázek</label>
+    <input type="file" name="image" id="image">
+    {% if article and article.images %}
+    <div style="margin-top: 1rem;">
+      <p>Aktuální obrázek:</p>
+      <img src="{{ url_for('static', filename=article.images[0].filename) }}" alt="Obrázek" style="max-width: 100%;">
+    </div>
+    {% endif %}
+
+    <button type="submit">Uložit</button>
+  </form>
+
+</main>
+{% endblock %}
