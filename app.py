@@ -26,7 +26,7 @@ load_dotenv()
 #flask login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"  # kam přesměrovat, když uživatel není přihlášen
+login_manager.login_view = "login"
 login_manager.login_message = "Musíš se přihlásit pro přístup na tuto stránku."
 
 @login_manager.user_loader
@@ -86,7 +86,6 @@ def create_article():
         content = request.form["content"]
         image_file = request.files.get("image")
 
-        # 💡 Debug výpis sem, hned po načtení souboru
         if image_file and image_file.filename != "":
             print("✅ Obrázek bude uložen:", image_file.filename)
         else:
@@ -134,7 +133,6 @@ def edit_article(article_id):
             image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             image_file.save(image_path)
 
-            # Nový obrázek se přidá k článku
             image = Image(filename=f"uploads/{filename}", article_id=article.id)
             db.session.add(image)
         db.session.commit()
@@ -174,7 +172,11 @@ def create_user():
         username = request.form['username']
         password = request.form['password']
 
-        # Pokud chceš hashovat heslo
+        if User.query.filter_by(username=username).first():
+            flash('Uživatelské jméno už existuje.', 'danger')
+            return redirect(url_for('create_user'))
+
+        # hash password
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
         new_user = User(username=username, password=hashed_password)
@@ -182,9 +184,9 @@ def create_user():
         db.session.commit()
 
         flash("Uživatel byl úspěšně přidán!", "success")
-        return redirect(url_for('user_management'))  # Po přidání uživatele přesměruj zpět na správu uživatelů
+        return redirect(url_for('user_management'))
 
-    return render_template('create_user.html')  # Vykreslí formulář pro vytvoření uživatele
+    return render_template('user_form.html')
 
 #edit user
 @app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
@@ -196,28 +198,35 @@ def edit_user(user_id):
         new_username = request.form.get('username')
         new_password = request.form.get('password')
 
-        if new_username:
-            existing_user = User.query.filter_by(username=new_username).first()
-            if existing_user and existing_user.id != user.id:
-                flash('Toto uživatelské jméno už existuje.', 'danger')
-                return redirect(url_for('edit_user', user_id=user.id))
+        existing_user = User.query.filter_by(username=new_username).first()
+        if existing_user and existing_user.id != user.id:
+            flash('Toto uživatelské jméno už existuje.', 'danger')
+            return redirect(url_for('edit_user', user_id=user.id))
 
-            user.username = new_username
-
+        user.username = new_username
         if new_password:
-            hashed_password = generate_password_hash(new_password)
-            user.password = hashed_password
+            user.password = generate_password_hash(new_password, method='pbkdf2:sha256')
 
         db.session.commit()
         flash('Uživatel byl upraven.', 'success')
         return redirect(url_for('user_management'))
 
-    return render_template('create_user.html', user=user)
+    return render_template('user_form.html', user=user)
 
-@app.route('/delete_user', methods=['GET', 'POST'])
+#delete user
+@app.route("/delete_user/<int:user_id>", methods=["GET", "POST"])
 @login_required
-def delete_user():
-    pass
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+
+    if user.id == current_user.id:
+        flash("Nemůžeš smazat sám sebe.", "danger")
+        return redirect(url_for("user_management"))
+
+    db.session.delete(user)
+    db.session.commit()
+    flash("Uživatel byl smazán.", "info")
+    return redirect(url_for("user_management"))
 
 
 @app.errorhandler(404)
@@ -230,14 +239,14 @@ if __name__ == "__main__":
 
 
 
-#create user
+#create user - console version
 #flask create-user admin tajneheslo
 
 @app.cli.command("create-user")
 @click.argument("username")
 @click.argument("password")
 def create_user(username, password):
-    """Vytvoří nového uživatele: flask create-user USERNAME PASSWORD"""
+    """new user: flask create-user USERNAME PASSWORD"""
     from werkzeug.security import generate_password_hash
 
     if User.query.filter_by(username=username).first():

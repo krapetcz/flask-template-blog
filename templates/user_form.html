@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="login-wrapper">
+  <form class="login-form" method="POST" enctype="multipart/form-data">
+    <h2>{% if user %}Upravit{% else %}Nový{% endif %} uživatel</h2>
+
+    <label for="username">Uživatelské jméno</label>
+    <input type="text" id="username" name="username" value="{{ user.username if user else '' }}" required>
+
+    <label for="password">{% if user %}Nové heslo (volitelné){% else %}Heslo{% endif %}</label>
+    <input type="password" id="password" name="password" {% if not user %}required{% endif %}>
+
+    <button type="submit">Uložit</button>
+  </form>
+</main>
+{% endblock %}
