@@ -172,13 +172,12 @@ def user_management():
 def create_user():
     if request.method == 'POST':
         username = request.form['username']
-        email = request.form['email']
         password = request.form['password']
 
         # Pokud chceš hashovat heslo
-        hashed_password = generate_password_hash(password, method='sha256')
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
-        new_user = User(username=username, email=email, password=hashed_password)
+        new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -186,6 +185,39 @@ def create_user():
         return redirect(url_for('user_management'))  # Po přidání uživatele přesměruj zpět na správu uživatelů
 
     return render_template('create_user.html')  # Vykreslí formulář pro vytvoření uživatele
+
+#edit user
+@app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(user_id):
+    user = User.query.get_or_404(user_id)
+
+    if request.method == 'POST':
+        new_username = request.form.get('username')
+        new_password = request.form.get('password')
+
+        if new_username:
+            existing_user = User.query.filter_by(username=new_username).first()
+            if existing_user and existing_user.id != user.id:
+                flash('Toto uživatelské jméno už existuje.', 'danger')
+                return redirect(url_for('edit_user', user_id=user.id))
+
+            user.username = new_username
+
+        if new_password:
+            hashed_password = generate_password_hash(new_password)
+            user.password = hashed_password
+
+        db.session.commit()
+        flash('Uživatel byl upraven.', 'success')
+        return redirect(url_for('user_management'))
+
+    return render_template('create_user.html', user=user)
+
+@app.route('/delete_user', methods=['GET', 'POST'])
+@login_required
+def delete_user():
+    pass
 
 
 @app.errorhandler(404)
