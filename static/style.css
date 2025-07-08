@@ -1,15 +1,15 @@
 :root {
-  --background-color: #fff8f2;      /* Jemný pastelový odstín pro pozadí obsahu i hlavičky */
-  --primary-color: #ffd6e8;         /* (už nevyužitá) pastelově růžová */
-  --accent-color: #b5ead7;          /* Pastelově zelená pro tlačítka */
-  --text-color: #2e2e2e;            /* Tmavší uhlová pro lepší kontrast */
+  --background-color: #fff8f2;
+  --primary-color: #ffd6e8;
+  --accent-color: #b5ead7;
+  --text-color: #2e2e2e;
   --card-radius: 1.25rem;
 }
 
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: #ffffff; /* bílé pozadí po stranách */
+  background-color: #ffffff;
   color: var(--text-color);
 }
 

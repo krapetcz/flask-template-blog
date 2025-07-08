@@ -1,7 +1,18 @@
-.env
-static/uploads
-venv
-.DS_STORE
-__pycache__
-.idea
+# Python virtual environment
+venv/
 
+# macOS system files
+.DS_Store
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# IDE settings
+.idea/
+
+# Environment variables
+.env
+
+# Uploaded media (should not be versioned)
+static/uploads/
